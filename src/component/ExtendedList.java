@@ -1,7 +1,7 @@
 package component;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -35,7 +35,6 @@ public class ExtendedList<T> extends ArrayList<T> {
                 continue outer;
             }
             newArray.add(apply);
-
         }
         return newArray;
     }
@@ -53,20 +52,30 @@ public class ExtendedList<T> extends ArrayList<T> {
         return flag;
     }
 
-    public ExtendedList<ExtendedList<T>> partition(List<T> numbers, Predicate<T> predicate) {
-        ExtendedList<T> evenNumbers = new ExtendedList<>();
-        ExtendedList<T> oddNumbers = new ExtendedList<>();
-        for (T number : numbers) {
+    public ExtendedList<ExtendedList<T>> partition(Predicate<T> predicate) {
+        final ExtendedList<T> evenNumbers = new ExtendedList<>();
+        final ExtendedList<T> oddNumbers = new ExtendedList<>();
+        final Object[] numbers = super.toArray();
+        for (Object number : numbers) {
             if (predicate.test((T) number)) {
-                evenNumbers.add(number);
+                evenNumbers.add((T) number);
             } else {
-                oddNumbers.add(number);
+                oddNumbers.add((T) number);
             }
         }
         ExtendedList<ExtendedList<T>> result = new ExtendedList<>();
         result.add(evenNumbers);
         result.add(oddNumbers);
         return result;
+    }
+
+    public T reduce(Integer element, BinaryOperator<T> binaryOperator) {
+        final Object[] elementsData = super.toArray();
+        T sum = (T) element;
+        for (Object datum : elementsData) {
+            sum = binaryOperator.apply(sum, (T) datum);
+        }
+        return sum;
     }
 
 }

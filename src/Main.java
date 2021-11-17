@@ -30,17 +30,14 @@ public class Main {
         boolean b = integers.forAll((i) -> i % 2 == 0);
         System.out.println(b);
 
-        ExtendedList<Integer> different = new ExtendedList<>();
-        different.add(1);
-        different.add(4);
-        different.add(8);
-        different.add(5);
-
-        ExtendedList<ExtendedList<Integer>> partition = integers.partition(different, (i) -> i % 2 == 0);
+        ExtendedList<ExtendedList<Integer>> partition = integers.partition((i) -> i % 2 == 0);
 
         for (ExtendedList<Integer> list : partition) {
             System.out.println(list);
         }
+
+        Integer reduce = integers.reduce(1, Integer::sum);
+        System.out.println(reduce);
     }
 
 }
